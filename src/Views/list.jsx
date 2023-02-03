@@ -30,17 +30,7 @@ function List() {
                     </td>
                   </tr>
 
-                  <tr>
-                    <td className="px-4 py-3 whitespace-nowrap text-sm text-white">
-                      <div className="flex items-left">
-                        <div className="flex">
-                          <div className="text-sm font-medium text-cyan-400">
-                            Task 1
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
+                  
 
   
                 </tbody>
