@@ -1,90 +1,126 @@
-import { AiFillEdit } from 'react-icons/ai';
-
+import React from "react";
+import axios from "axios";
 
 function deleteButton() {
   console.log("Delete button clicked");
 }
 
-
-function editButton () {
-  return console.log("Edit button clicked");
+function editButton() {
+  console.log("Edit button clicked");
 }
-
 
 function List() {
+  const url = "http://localhost:3000/tasks";
+  let [responseData, setResponseData] = React.useState("");
 
-  let today = new Date();
-  let dd = String(today.getDate()).padStart(2, '0');
-  let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-  let yyyy = today.getFullYear();
+  const headers = {
+    "Content-Type": "application/json",
+  };
 
-  today = mm + '/' + dd + '/' + yyyy;
+  const fetchData = React.useCallback(() => {
+    axios({
+      method: "GET",
+      url: url,
+      headers: headers,
+    })
+      .then((response) => {
+        console.log("------->", response.data);
+        setResponseData(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
-    return (
-            <div className="py-3 px-8 justify-center flex flex-col">
-                <table className="divide-y">
-                <thead className="bg-cyan-900">
-                  <tr>
-                    <th scope="col" className="px-6 py-6 text-left text-xs font-medium text-sixth-500 uppercase tracking-wider text-white">
-                      Task
-                    </th>
-                
-                    <th scope="col" className="px-6 py-6 text-center text-xs font-medium text-sixth-500 uppercase tracking-wider text-white">
-                      Complete by
-                    </th>
-  
-                    <th scope="col" className="px-6 py-6 text-center text-xs font-medium text-sixth-500 uppercase tracking-wider text-white">
-                      Actions
-                    </th>  
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-sixth-200 shadow bg-white">
-                  <tr>
+  React.useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
-                    <td className="px-4 py-3 whitespace-nowrap text-sm text-white">
-                      <div className="flex">
-                        <div className="flex">
-                          <div className="text-sm font-medium text-cyan-400">
-                            Task 1
+  return (
+    <div className="py-3 px-8 justify-center flex flex-col">
+      <table className="divide-y">
+        <thead className="bg-cyan-900">
+          <tr>
+            <th
+              scope="col"
+              className="px-6 py-6 text-left text-xs font-medium text-sixth-500 uppercase tracking-wider text-white"
+            >
+              ID
+            </th>
+            <th
+              scope="col"
+              className="px-6 py-6 text-left text-xs font-medium text-sixth-500 uppercase tracking-wider text-white"
+            >
+              Task
+            </th>
+
+            <th
+              scope="col"
+              className="px-6 py-6 text-center text-xs font-medium text-sixth-500 uppercase tracking-wider text-white"
+            >
+              Complete by
+            </th>
+
+            <th
+              scope="col"
+              className="px-6 py-6 text-center text-xs font-medium text-sixth-500 uppercase tracking-wider text-white"
+            >
+              Actions
+            </th>
+          </tr>
+        </thead>
+
+        <tbody className="divide-y divide-sixth-200 shadow bg-white">
+            {responseData.map((item, index) => {
+              console.log("item", item);
+
+                        <tr key={index}>
+                        <td className="px-4 py-3 whitespace-nowrap text-sm text-white">
+                          <div className="flex">
+                            <div className="flex">
+                              <div className="text-sm font-medium text-cyan-400">
+                                {item.id}
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                    </td>
-
-                    <td className="px-4 py-3 whitespace-nowrap text-sm text-white">
-                      <div className="items-center">
-                        <div className="flex-row justify-end">
-                          <div className="text-sm font-medium text-cyan-400">
-                            {today}
+                        </td>
+            
+                        <td className="px-4 py-3 whitespace-nowrap text-sm text-white">
+                          <div className="flex">
+                            <div className="flex">
+                              <div className="text-sm font-medium text-cyan-400">{item.name}</div>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                    </td>
-
-                    <td className="px-4 py-3 whitespace-nowrap text-sm text-white">
-                      <div className="items-center">
-                        <div className="flex justify-center">
-                          <button className="text-sm font-medium pr-2" onClickCapture={editButton}>
-                            <i className='text-black'>{AiFillEdit}</i> <span className='text-black'>Edit</span>
-                          </button>
-
-                          <button className="text-sm font-medium text-black pr-2" onClickCapture={deleteButton}>
-                            Delete
-                          </button>
-
-                        </div>
-                      </div>
-                    </td>
-
-                  </tr>                  
-
-  
-                </tbody>
-              </table>  
-            </div>
-      
-    );
+                        </td>
+            
+                        <td className="px-4 py-3 whitespace-nowrap text-sm text-white">
+                          <div className="items-center">
+                            <div className="flex justify-center">
+                              <button
+                                className="text-sm font-medium pr-2"
+                                onClickCapture={editButton}
+                              >
+                                <i className="text-black">{0}</i>{" "}
+                                <span className="text-black">Edit</span>
+                              </button>
+            
+                              <button
+                                className="text-sm font-medium text-black pr-2"
+                                onClickCapture={deleteButton}
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+          
+          })}
+        
+        </tbody>
+      </table>
+    </div>
+  );
 }
-
 
 export default List;
